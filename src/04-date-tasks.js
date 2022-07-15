@@ -106,7 +106,6 @@ function angleBetweenClockHands(date) {
   const angle = Math.abs(hourAngle - minuteAngle);
   const rad = Math.min(angle, 360 - angle) * (Math.PI / 180);
   return rad;
-  // throw new Error('Not implemented');
 }
 
 
