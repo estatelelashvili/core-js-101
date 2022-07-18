@@ -115,65 +115,70 @@ function fromJSON(proto, json) {
 
 const cssSelectorBuilder = {
   str: '',
-  exeption(x) {
-    if (this.i > x) {
+  arrangedException: 'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element',
+  oneTimeOnlyException: 'Element, id and pseudo-element should not occur more then one time inside the selector',
+
+  exeption(ex) {
+    if (this.indicator > ex) {
       throw new Error(
-        'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element',
+        this.arrangedException,
       );
     }
-    if (this.i === x && (x === 1 || x === 2 || x === 6)) {
-      throw new Error(
-        'Element, id and pseudo-element should not occur more then one time inside the selector',
-      );
+    if (this.indicator === ex) {
+      if (ex === 'a' || ex === 'b' || ex === 'f') {
+        throw new Error(
+          this.oneTimeOnlyException,
+        );
+      }
     }
   },
 
   element(value) {
-    this.exeption(1);
-    const init = Object.create(cssSelectorBuilder);
-    init.i = 1;
-    init.str = this.str + value;
-    return init;
+    this.exeption('a');
+    const element = Object.create(cssSelectorBuilder);
+    element.indicator = 'a';
+    element.str = this.str + value;
+    return element;
   },
 
   id(value) {
-    this.exeption(2);
-    const init = Object.create(cssSelectorBuilder);
-    init.i = 2;
-    init.str = `${this.str}#${value}`;
-    return init;
+    this.exeption('b');
+    const id = Object.create(cssSelectorBuilder);
+    id.indicator = 'b';
+    id.str = `${this.str}#${value}`;
+    return id;
   },
 
   class(value) {
-    this.exeption(3);
-    const init = Object.create(cssSelectorBuilder);
-    init.i = 3;
-    init.str = `${this.str}.${value}`;
-    return init;
+    this.exeption('c');
+    const Class = Object.create(cssSelectorBuilder);
+    Class.indicator = 'c';
+    Class.str = `${this.str}.${value}`;
+    return Class;
   },
 
   attr(value) {
-    this.exeption(4);
-    const init = Object.create(cssSelectorBuilder);
-    init.i = 4;
-    init.str = `${this.str}[${value}]`;
-    return init;
+    this.exeption('d');
+    const attr = Object.create(cssSelectorBuilder);
+    attr.indicator = 'd';
+    attr.str = `${this.str}[${value}]`;
+    return attr;
   },
 
   pseudoClass(value) {
-    this.exeption(5);
-    const init = Object.create(cssSelectorBuilder);
-    init.i = 5;
-    init.str = `${this.str}:${value}`;
-    return init;
+    this.exeption('e');
+    const pseudoClass = Object.create(cssSelectorBuilder);
+    pseudoClass.indicator = 'e';
+    pseudoClass.str = `${this.str}:${value}`;
+    return pseudoClass;
   },
 
   pseudoElement(value) {
-    this.exeption(6);
-    const init = Object.create(cssSelectorBuilder);
-    init.i = 6;
-    init.str = `${this.str}::${value}`;
-    return init;
+    this.exeption('f');
+    const pseudoElement = Object.create(cssSelectorBuilder);
+    pseudoElement.indicator = 'f';
+    pseudoElement.str = `${this.str}::${value}`;
+    return pseudoElement;
   },
 
   combine(selector1, combinator, selector2) {
