@@ -234,8 +234,28 @@ function findFirstSingleChar(str) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  let finalString = '';
+  const roundStart = '(';
+  const roundEnd = ')';
+  const squareStart = '[';
+  const squareEnd = ']';
+  if (isStartIncluded) {
+    finalString += squareStart;
+  } else {
+    finalString += roundStart;
+  }
+  if (a > b) {
+    finalString += `${b}, ${a}`;
+  } else {
+    finalString += `${a}, ${b}`;
+  }
+  if (isEndIncluded) {
+    finalString += squareEnd;
+  } else {
+    finalString += roundEnd;
+  }
+  return finalString;
 }
 
 
@@ -251,8 +271,8 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return str.split('').reverse().join('');
 }
 
 
@@ -293,8 +313,13 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const reversedArr = ccn.toString().split('').reverse();
+  const odded = reversedArr.map((x, i) => (i % 2 !== 0 ? x * 2 : x));
+  const nineFilter = odded.map((x) => (x > 9 ? x - 9 : x));
+  const reduced = nineFilter.reduce((a, b) => (+a) + (+b), 0);
+
+  return reduced % 10 === 0;
 }
 
 /**
@@ -389,8 +414,10 @@ function toNaryString(num, n) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
-function getCommonDirectoryPath(/* pathes */) {
-  throw new Error('Not implemented');
+function getCommonDirectoryPath(pathes) {
+  const dirs = pathes.map((path) => path.split('/'));
+  const index = dirs[0].findIndex((x, i) => dirs.some((dir) => x !== dir[i]));
+  return index === 0 ? '' : `${dirs[0].slice(0, index).join('/')}/`;
 }
 
 
