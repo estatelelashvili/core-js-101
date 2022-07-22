@@ -476,8 +476,54 @@ function getMatrixProduct(m1, m2) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  const p = position;
+  for (let i = 0; i < p.length; i += 1) {
+    let wincounter = [];
+    let counter = 0;
+    let threshold = 0;
+    for (let j = 0; j < p.length; j += 1) {
+      counter += 1;
+      if (counter % 3 === 0) {
+        threshold = counter;
+      }
+      if (p[i][j] === 'X' || p[i][j] === '0') {
+        wincounter.push(p[i][j]);
+        if (counter <= threshold) {
+          if (wincounter.length === 3 && wincounter.every((val, _, arr) => val === arr[0])) {
+            return wincounter[0];
+          }
+          wincounter = [];
+        }
+      }
+    }
+  }
+  for (let i = 0; i < p.length; i += 1) {
+    let wincounter2 = [];
+    let counter2 = 0;
+    let threshold2 = 0;
+    for (let j = 0; j < p.length; j += 1) {
+      counter2 += 1;
+      if (counter2 % 3 === 0) {
+        threshold2 = counter2;
+      }
+      if (p[j][i] === 'X' || p[j][i] === '0') {
+        wincounter2.push(p[j][i]);
+        if (counter2 <= threshold2) {
+          if (wincounter2.length === 3 && wincounter2.every((val, _, arr) => val === arr[0])) {
+            return wincounter2[0];
+          }
+          wincounter2 = [];
+        }
+      }
+    }
+  }
+  const diagonal1 = [p[0][0], p[1][1], p[2][2]].every((val, i, arr) => val === arr[0]);
+  const diagonal2 = [p[0][2], p[1][1], p[2][0]].every((val, i, arr) => val === arr[0]);
+  if (diagonal1 || diagonal2) {
+    return p[1][1];
+  }
+  return undefined;
 }
 
 
